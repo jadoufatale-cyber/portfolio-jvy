@@ -1,0 +1,2143 @@
+<!DOCTYPE html>
+<!--
+  PORTFOLIO JADE VINCENT — VERSION FUSIONNÉE ET CORRIGÉE
+  Base : "test 0110.html" (design complet) + logique de filtre de "Porte folio finale test examen.html"
+  Toutes les modifications sont signalées par des commentaires [CORRIGÉ] ou [AJOUTÉ].
+-->
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jade Vincent — Portfolio Cybersécurité</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cinzel:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #03080a;
+  --surface: rgba(5,20,24,0.85);
+  --surface2: rgba(8,28,34,0.7);
+  --border: rgba(0,220,180,0.12);
+  --border2: rgba(0,220,180,0.25);
+  --accent: #00ddb4;
+  --accent2: #00ffcc;
+  --accent3: #e8c97e;
+  --rose: #e87e9a;
+  --text: #dff5f0;
+  --text2: #96bcb8;
+  --text3: #5cb8ad;
+  --glow: 0 0 30px rgba(0,221,180,0.25);
+  --glow2: 0 0 60px rgba(0,221,180,0.12);
+  --gold-glow: 0 0 30px rgba(232,201,126,0.3);
+}
+/* [CORRIGÉ] suppression de --bg2 (valeur hexadécimale invalide à 8 chiffres + jamais utilisée) */
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===== PARTICLE CANVAS ===== */
+#hero-canvas {
+  position: fixed;
+  top:0;left:0;right:0;bottom:0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ===== AURORA BG ===== */
+.aurora {
+  position: fixed;
+  top:0;left:0;right:0;bottom:0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.aurora-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.06;
+  animation: floatBlob 18s ease-in-out infinite;
+}
+.aurora-blob:nth-child(1) { width:600px;height:600px;background:var(--accent);top:-100px;left:-150px; animation-duration:20s; }
+.aurora-blob:nth-child(2) { width:500px;height:500px;background:#0050ff;top:40%;right:-100px; animation-duration:25s; animation-delay:-8s; }
+.aurora-blob:nth-child(3) { width:400px;height:400px;background:var(--accent3);bottom:-80px;left:40%; animation-duration:22s; animation-delay:-4s; }
+
+@keyframes floatBlob {
+  0%,100% { transform: translate(0,0) scale(1); }
+  33% { transform: translate(40px,-30px) scale(1.05); }
+  66% { transform: translate(-20px,40px) scale(0.95); }
+}
+
+/* ===== HEADER ===== */
+header {
+  position: relative;
+  z-index: 10;
+  padding: 60px 80px 50px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(0,221,180,0.04) 0%, transparent 100%);
+}
+
+.header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.logo-section { display:flex;flex-direction:column;gap:6px; }
+
+.name-wrapper { position: relative; display: inline-block; }
+
+.logo-name {
+  font-family: 'Cinzel', serif;
+  font-size: 3.2rem;
+  font-weight: 700;
+  color: transparent;
+  background: linear-gradient(135deg, var(--accent2) 0%, var(--accent3) 50%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  letter-spacing: 6px;
+  line-height: 1;
+  position: relative;
+  filter: drop-shadow(0 0 20px rgba(0,255,200,0.3));
+  animation: shimmer 4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%,100% { filter: drop-shadow(0 0 20px rgba(0,255,200,0.3)); }
+  50% { filter: drop-shadow(0 0 40px rgba(0,255,200,0.6)); }
+}
+
+.logo-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: var(--accent3);
+  letter-spacing: 3px;
+  margin-top: 4px;
+}
+
+.logo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 5px 14px;
+  background: rgba(0,221,180,0.07);
+  border: 1px solid var(--border2);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--accent);
+  letter-spacing: 3px;
+  width: fit-content;
+  position: relative;
+  overflow: hidden;
+}
+
+.logo-badge::before {
+  content: '';
+  position: absolute;
+  top: 0;left:-100%;width:100%;height:100%;
+  background: linear-gradient(90deg, transparent, rgba(0,221,180,0.1), transparent);
+  animation: sweep 3s ease-in-out infinite;
+}
+
+@keyframes sweep { 0% { left:-100%; } 100% { left:200%; } }
+
+.logo-badge-dot {
+  width:7px;height:7px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--accent);
+  animation: blink 2s infinite;
+}
+
+@keyframes blink {
+  0%,100% { opacity:1;box-shadow:0 0 8px var(--accent); }
+  50% { opacity:0.3;box-shadow:0 0 2px var(--accent); }
+}
+
+.header-stats {
+  display: flex;
+  gap: 20px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.stat-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 22px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  backdrop-filter: blur(12px);
+  position: relative;
+  min-width: 90px;
+  transition: border-color 0.3s, transform 0.3s;
+}
+
+.stat-box:hover { border-color: var(--border2); transform: translateY(-3px); }
+
+.stat-box::after {
+  content:'';
+  position:absolute;
+  top:-1px;left:0;
+  width:100%;height:2px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+}
+
+.stat-num {
+  font-family: 'Cinzel', serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--accent);
+  filter: drop-shadow(0 0 8px rgba(0,221,180,0.5));
+}
+
+.stat-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--text3);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* ===== NAV ===== */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(3,8,10,0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+/* [CORRIGÉ] suppression de "overflow-x: auto" : il forçait aussi overflow-y à auto
+   et coupait les menus déroulants (cause principale des onglets différents). */
+.nav-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  padding: 0 80px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.nav-tab {
+  padding: 18px 28px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--text3);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  letter-spacing: 2px;
+  border-bottom: 1px solid transparent;
+  transition: all 0.3s;
+  white-space: nowrap;
+  position: relative;
+}
+
+.nav-tab::after {
+  content: attr(data-num);
+  position: absolute;
+  top: 12px; left: 14px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.55rem;
+  color: var(--text3);
+  opacity: 0.5;
+  font-style: normal;
+}
+
+.nav-tab:hover { color: var(--text2); border-bottom-color: var(--text3); }
+.nav-tab.active {
+  color: var(--accent3);
+  border-bottom-color: var(--accent3);
+  text-shadow: 0 0 20px rgba(232,201,126,0.4);
+}
+
+/* ===== MENUS DÉROULANTS (Projets / Veilles) ===== */
+.nav-dropdown-item { position: relative; display: inline-block; }
+
+.dropdown-card {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 200px;
+  background: #ffffff;
+  border-radius: 4px;
+  padding: 8px 0;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  z-index: 120;
+}
+
+/* [CORRIGÉ] ajout de :focus-within pour que le menu s'ouvre aussi au clavier / au toucher */
+.nav-dropdown-item:hover .dropdown-card,
+.nav-dropdown-item:focus-within .dropdown-card {
+  display: block;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dropdown-link {
+  display: block;
+  padding: 10px 20px;
+  color: #222222;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+  cursor: pointer;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.dropdown-link:hover { background: #f0f4f5; color: var(--accent); }
+
+/* ===== MAIN ===== */
+main {
+  position: relative;
+  z-index: 10;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 50px 80px 100px;
+}
+
+.tab-content { display:none; }
+.tab-content.active { display: block; animation: revealTab 0.5s ease; }
+
+@keyframes revealTab {
+  from { opacity:0; transform: translateY(12px); }
+  to { opacity:1; transform: translateY(0); }
+}
+
+/* ===== SECTION HEADER ===== */
+.section-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 48px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+.section-header::after {
+  content:'';
+  position:absolute;
+  bottom:-1px;left:0;
+  width:100px;height:1px;
+  background: linear-gradient(90deg, var(--accent3), transparent);
+}
+
+.section-icon {
+  font-family: 'Cinzel', serif;
+  font-size: 1.6rem;
+  color: var(--accent3);
+  filter: drop-shadow(0 0 10px rgba(232,201,126,0.4));
+  margin-top: 4px;
+}
+
+.section-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 4px;
+  line-height: 1.2;
+}
+
+.section-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--text3);
+  letter-spacing: 2px;
+  margin-top: 4px;
+}
+
+/* [AJOUTÉ] message affiché quand un filtre ne trouve aucune carte */
+.empty-state {
+  display: none;
+  padding: 30px;
+  border: 1px dashed var(--border2);
+  font-style: italic;
+  color: var(--text3);
+  text-align: center;
+  letter-spacing: 1px;
+}
+.empty-state.show { display: block; }
+
+/* ===== CARDS ===== */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+  padding: 32px;
+  margin-bottom: 22px;
+  position: relative;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  overflow: hidden;
+}
+
+.card::before {
+  content:'';
+  position:absolute;
+  top:0;left:0;width:2px;height:100%;
+  background: linear-gradient(180deg, var(--accent3), transparent);
+}
+
+.card::after {
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;bottom:0;
+  background: radial-gradient(ellipse at top left, rgba(0,221,180,0.03) 0%, transparent 60%);
+  pointer-events:none;
+}
+
+.card:hover { border-color: var(--border2); box-shadow: var(--glow2); }
+
+/* ===== DIPLÔMES ===== */
+.diploma-wrap {
+  position: relative;
+  margin-bottom: 28px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  padding: 40px;
+  overflow: hidden;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.diploma-wrap:hover { border-color: var(--border2); box-shadow: 0 0 50px rgba(0,221,180,0.08); }
+
+.diploma-wrap .ornament {
+  position: absolute;
+  top: 20px; right: 24px;
+  font-family: 'Cinzel', serif;
+  font-size: 3.5rem;
+  color: rgba(0,221,180,0.05);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.diploma-year {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--accent);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.diploma-name {
+  font-family: 'Cinzel', serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 14px;
+  letter-spacing: 2px;
+}
+
+.mention {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 18px;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1rem;
+  margin-bottom: 18px;
+}
+
+.mention-tb {
+  background: rgba(0,221,180,0.08);
+  border: 1px solid rgba(0,221,180,0.3);
+  color: var(--accent2);
+  box-shadow: 0 0 15px rgba(0,221,180,0.15);
+}
+
+.mention-ab {
+  background: rgba(232,201,126,0.08);
+  border: 1px solid rgba(232,201,126,0.3);
+  color: var(--accent3);
+  box-shadow: 0 0 15px rgba(232,201,126,0.15);
+}
+
+.diploma-text {
+  font-size: 1.05rem;
+  font-weight: 300;
+  color: var(--text2);
+  line-height: 1.9;
+}
+
+.btn-reveal {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  padding: 9px 22px;
+  background: transparent;
+  border: 1px solid var(--border2);
+  color: var(--text2);
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-reveal:hover { border-color: var(--accent3); color: var(--accent3); box-shadow: var(--gold-glow); }
+
+.desc-block {
+  display: none;
+  margin-top: 18px;
+  padding: 22px;
+  background: rgba(0,0,0,0.3);
+  border-left: 2px solid rgba(0,221,180,0.2);
+  animation: revealTab 0.4s ease;
+}
+
+.desc-block.open { display:block; }
+
+[contenteditable="true"] {
+  outline: none;
+  transition: background 0.2s;
+  cursor: text;
+  border-bottom: 1px dashed rgba(0,221,180,0.2);
+  min-height: 1em;
+}
+[contenteditable="true"]:focus { background: rgba(0,221,180,0.04); border-bottom-color: var(--accent); }
+[contenteditable="true"]:empty::before { content: attr(data-placeholder); color: var(--text3); font-style: italic; }
+
+/* ===== PROJETS ===== */
+.project-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+  padding: 32px;
+  margin-bottom: 22px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.project-card:hover {
+  border-color: var(--border2);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+  transform: translateY(-2px);
+}
+
+.project-card::after {
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;bottom:0;
+  background: radial-gradient(ellipse at top right, rgba(0,221,180,0.04) 0%, transparent 60%);
+  pointer-events:none;
+}
+
+.proj-num {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--text3);
+  letter-spacing: 3px;
+  margin-bottom: 10px;
+}
+
+.proj-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 14px;
+  letter-spacing: 1px;
+}
+
+.proj-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+
+.tag {
+  padding: 3px 10px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 1px;
+  background: rgba(0,221,180,0.06);
+  border: 1px solid rgba(0,221,180,0.18);
+  color: var(--accent);
+  transition: all 0.2s;
+}
+
+.tag:hover { background: rgba(0,221,180,0.12); }
+
+.proj-summary {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  font-weight: 300;
+  color: var(--text2);
+  line-height: 1.9;
+  margin-bottom: 20px;
+}
+
+.proj-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 22px;
+  background: rgba(0,221,180,0.08);
+  border: 1px solid rgba(0,221,180,0.3);
+  color: var(--accent);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::before {
+  content:'';
+  position:absolute;
+  top:0;left:-100%;width:100%;height:100%;
+  background: linear-gradient(90deg, transparent, rgba(0,221,180,0.15), transparent);
+  transition: left 0.4s;
+}
+
+.btn-primary:hover::before { left:100%; }
+.btn-primary:hover { box-shadow: var(--glow); }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 22px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text2);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.3s;
+}
+
+.btn-secondary:hover { border-color: var(--text2); color: var(--text); }
+
+.pdf-name { font-family: 'Share Tech Mono', monospace; font-size: 0.68rem; color: var(--text3); }
+.pdf-name.loaded { color: var(--accent2); }
+
+/* ===== COMPÉTENCES ===== */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 22px;
+  margin-bottom: 30px;
+}
+
+.skill-cat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+
+.skill-cat::before {
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;height:1px;
+  background: linear-gradient(90deg, var(--accent3), transparent);
+}
+
+.skill-cat:hover { border-color: var(--border2); }
+
+.skill-cat-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent3);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.skill-item { margin-bottom: 16px; }
+
+.skill-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+
+.skill-name-label { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 600; color: var(--text); }
+
+.skill-lvl { font-family: 'Share Tech Mono', monospace; font-size: 0.6rem; color: var(--text3); letter-spacing: 1px; }
+
+.skill-bar {
+  height: 2px;
+  background: rgba(0,221,180,0.08);
+  border: 1px solid rgba(0,221,180,0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.skill-fill {
+  height: 100%;
+  background: linear-gradient(90deg, rgba(0,221,180,0.5), var(--accent));
+  box-shadow: 0 0 8px rgba(0,221,180,0.4);
+  transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ===== ALTERNANCE ===== */
+.alt-hero {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  padding: 40px;
+  margin-bottom: 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+.alt-company {
+  font-family: 'Cinzel', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--accent3);
+  filter: drop-shadow(0 0 12px rgba(232,201,126,0.3));
+  margin-bottom: 6px;
+  letter-spacing: 3px;
+}
+
+.alt-role {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.2rem;
+  font-weight: 300;
+  color: var(--text);
+  margin-bottom: 20px;
+}
+
+.alt-meta { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
+
+.alt-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(0,221,180,0.04);
+  border: 1px solid var(--border);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text2);
+}
+
+.alt-meta-item span { color: var(--accent); }
+
+.alt-section {
+  font-family: 'Cinzel', serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 3px;
+  margin-bottom: 14px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mission-list { list-style: none; padding:0; }
+
+.mission-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(0,221,180,0.05);
+}
+.mission-item:last-child { border-bottom: none; }
+
+.mission-dot {
+  width: 5px; height: 5px;
+  background: var(--accent);
+  border-radius: 50%;
+  margin-top: 10px;
+  flex-shrink: 0;
+  box-shadow: 0 0 6px var(--accent);
+}
+
+.mission-txt {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  font-weight: 300;
+  color: var(--text2);
+  line-height: 1.8;
+  flex: 1;
+}
+
+.add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  background: transparent;
+  border: 1px dashed rgba(0,221,180,0.2);
+  color: var(--text3);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  text-transform: uppercase;
+  margin-top: 10px;
+  transition: all 0.3s;
+}
+.add-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ===== CONTACT ===== */
+.contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+
+.contact-form {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  padding: 36px;
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-form::before {
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;height:1px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+}
+
+.form-group { margin-bottom: 22px; }
+
+.form-label {
+  display: block;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--text3);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  font-weight: 300;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-input:focus { border-color: rgba(0,221,180,0.4); box-shadow: 0 0 0 1px rgba(0,221,180,0.1); }
+.form-input::placeholder { color: var(--text3); font-style: italic; }
+
+textarea.form-input { min-height: 130px; resize: vertical; font-family: 'Cormorant Garamond', serif; }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.btn-send {
+  width: 100%;
+  padding: 15px;
+  background: rgba(0,221,180,0.08);
+  border: 1px solid rgba(0,221,180,0.35);
+  color: var(--accent);
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 4px;
+  cursor: pointer;
+  text-transform: uppercase;
+  margin-top: 8px;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-send::before {
+  content:'';
+  position:absolute;
+  top:0;left:-100%;width:100%;height:100%;
+  background: linear-gradient(90deg, transparent, rgba(0,221,180,0.15), transparent);
+  transition: left 0.5s;
+}
+
+.btn-send:hover::before { left:100%; }
+.btn-send:hover { box-shadow: var(--glow); }
+
+.form-status {
+  margin-top: 12px;
+  padding: 10px 16px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  display: none;
+}
+
+.form-status.success { display:block; background: rgba(0,221,180,0.08); border: 1px solid rgba(0,221,180,0.3); color: var(--accent); }
+.form-status.error { display:block; background: rgba(232,126,154,0.08); border: 1px solid rgba(232,126,154,0.3); color: var(--rose); }
+
+.cv-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.cv-section::before {
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;height:1px;
+  background: linear-gradient(90deg, var(--accent3), transparent);
+}
+
+.cv-drop {
+  flex: 1;
+  min-height: 180px;
+  background: rgba(0,0,0,0.3);
+  border: 1px dashed rgba(0,221,180,0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  cursor: pointer;
+  transition: all 0.3s;
+  padding: 28px;
+}
+
+.cv-drop:hover { border-color: rgba(0,221,180,0.4); background: rgba(0,221,180,0.03); }
+
+.cv-drop-icon { font-size: 2.2rem; opacity: 0.35; }
+
+.cv-drop-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--text3);
+  letter-spacing: 2px;
+  text-align: center;
+}
+
+.contact-info-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(0,221,180,0.05);
+}
+.contact-info-row:last-child { border-bottom: none; }
+.contact-info-icon { color: var(--accent); font-size: 0.85rem; flex-shrink: 0; }
+.contact-info-text {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--text2);
+  text-decoration: none;
+  transition: color 0.2s;
+  word-break: break-all;
+}
+.contact-info-text:hover { color: var(--accent); }
+
+/* ===== CORNER ORNAMENTS ===== */
+.corners { position: relative; }
+.c-tl,.c-tr,.c-bl,.c-br {
+  position:absolute;
+  width:14px;height:14px;
+  border-color: var(--accent3);
+  border-style: solid;
+  opacity: 0.4;
+}
+.c-tl { top:10px;left:10px; border-width:1px 0 0 1px; }
+.c-tr { top:10px;right:10px; border-width:1px 1px 0 0; }
+.c-bl { bottom:10px;left:10px; border-width:0 0 1px 1px; }
+.c-br { bottom:10px;right:10px; border-width:0 1px 1px 0; }
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width:4px;height:4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border2); }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* [CORRIGÉ] les deux blocs @media(max-width:768px) dupliqués sont fusionnés en un seul */
+@media(max-width:768px) {
+  header, main { padding: 25px; }
+  .nav-inner { padding: 0 20px; }
+  .nav-tab { padding: 14px 16px; }
+  .logo-name { font-size: 2rem; }
+  .contact-layout, .form-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="aurora">
+  <div class="aurora-blob"></div>
+  <div class="aurora-blob"></div>
+  <div class="aurora-blob"></div>
+</div>
+<canvas id="hero-canvas"></canvas>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="logo-section">
+      <div class="name-wrapper">
+        <div class="logo-name">Jade Vincent</div>
+      </div>
+      <div class="logo-subtitle">BTS SIO — Option SISR</div>
+      <div class="logo-badge">
+        <div class="logo-badge-dot"></div>
+        Systèmes d'infrastructure, sécurité & réseaux
+      </div>
+    </div>
+    <div class="header-stats">
+      <div class="stat-box">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Diplômes</div>
+      </div>
+      <div class="stat-box">
+        <!-- [CORRIGÉ] compteur calculé automatiquement en JS -->
+        <div class="stat-num" id="tp-count">0</div>
+        <div class="stat-label">Projets</div>
+      </div>
+      <div class="stat-box">
+        <!-- [CORRIGÉ] compteur calculé automatiquement en JS + faute "tecnhologique" -->
+        <div class="stat-num" id="veille-count">0</div>
+        <div class="stat-label">Veilles technologiques</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">24+</div>
+        <div class="stat-label">Compétences</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <button class="nav-tab active" data-tab="diplomes" data-num="01">Diplômes</button>
+
+    <div class="nav-dropdown-item">
+      <button class="nav-tab" data-tab="projets" data-num="02">Projets ▾</button>
+      <div class="dropdown-card">
+        <div class="dropdown-link" onclick="selectProjectFilter('all')">Tous</div>
+        <div class="dropdown-link" onclick="selectProjectFilter('U5')">U5</div>
+        <div class="dropdown-link" onclick="selectProjectFilter('U6')">U6</div>
+        <div class="dropdown-link" onclick="selectProjectFilter('U7')">U7</div>
+      </div>
+    </div>
+
+    <!-- [CORRIGÉ] data-tab="veilles" (avant : "projets", qui ouvrait l'onglet Projets)
+         + fonction de filtre dédiée selectVeilleFilter avec des clés courtes -->
+    <div class="nav-dropdown-item">
+      <button class="nav-tab" data-tab="veilles" data-num="03">Veilles technologiques ▾</button>
+      <div class="dropdown-card">
+        <div class="dropdown-link" onclick="selectVeilleFilter('all')">Toutes</div>
+        <div class="dropdown-link" onclick="selectVeilleFilter('cyber')">Cybersécurité & Défense des Réseaux</div>
+        <div class="dropdown-link" onclick="selectVeilleFilter('virtu')">Virtualisation & Systèmes (Cloud / On-premise)</div>
+        <div class="dropdown-link" onclick="selectVeilleFilter('reseaux')">Réseaux & Connectivité (Infrastructure Moderne)</div>
+      </div>
+    </div>
+
+    <!-- [CORRIGÉ] renumérotation des data-num -->
+    <button class="nav-tab" data-tab="competences" data-num="04">Compétences</button>
+    <button class="nav-tab" data-tab="alternance" data-num="05">Alternance</button>
+    <button class="nav-tab" data-tab="contact" data-num="06">Contact</button>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main>
+
+<!-- ======= DIPLÔMES ======= -->
+<div id="tab-diplomes" class="tab-content active">
+  <div class="section-header">
+    <div class="section-icon">✦</div>
+    <div>
+      <div class="section-title">Mes Diplômes</div>
+      <div class="section-sub">Parcours académique & formations</div>
+    </div>
+  </div>
+
+  <!-- DNB -->
+  <div class="diploma-wrap corners">
+    <div class="c-tl"></div><div class="c-tr"></div><div class="c-bl"></div><div class="c-br"></div>
+    <div class="ornament">◈</div>
+    <div class="diploma-year">2022 · Diplôme National du Brevet</div>
+    <div class="diploma-name">Brevet des Collèges</div>
+    <div class="mention mention-tb">✦ Mention Très Bien</div>
+    <p class="diploma-text">
+      Diplôme national obtenu avec la plus haute distinction, attestant de la maîtrise
+      du socle commun de connaissances, de compétences et de culture.
+    </p>
+  </div>
+
+  <!-- BAC -->
+  <div class="diploma-wrap corners">
+    <div class="c-tl"></div><div class="c-tr"></div><div class="c-bl"></div><div class="c-br"></div>
+    <div class="ornament">⋆</div>
+    <div class="diploma-year">2025 · Baccalauréat Technologique</div>
+    <div class="diploma-name">Baccalauréat — Série Technologique</div>
+    <div class="mention mention-ab">◈ Mention Assez Bien</div>
+    <p class="diploma-text">
+      Baccalauréat technologique obtenu avec la mention Assez Bien.
+    </p>
+    <button class="btn-reveal" onclick="toggleDesc('bac-desc',this)">
+      ⊕ &nbsp;Découvrir le parcours
+    </button>
+    <div class="desc-block" id="bac-desc">
+      <p contenteditable="true" data-placeholder="Décris tes spécialités, projets, Grand Oral..." style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:300;color:var(--text2);line-height:1.9;">
+        Spécialités choisies : Sciences Informatiques et Numérique (SIN) et Mathématiques.
+        Durant ces deux années, j'ai approfondi mes connaissances en informatique et architecture réseau. Mon Grand Oral portait sur un projet étudier pendant toute l'année de terminal, celui ci était un robot autonome qui mesure la qualiter des sols agricoles de manière autonome. J'ai pu programmer les capteurs et les faire fonctionner simultanément .
+      </p>
+    </div>
+  </div>
+
+  <!-- BTS en cours -->
+  <div class="diploma-wrap corners" style="border-color: rgba(0,221,180,0.25);">
+    <div class="c-tl" style="opacity:0.9"></div><div class="c-tr" style="opacity:0.9"></div>
+    <div class="c-bl" style="opacity:0.9"></div><div class="c-br" style="opacity:0.9"></div>
+    <div class="ornament" style="color:rgba(0,221,180,0.08);">◇</div>
+    <div class="diploma-year">2025 – 2027 · En cours d'obtention</div>
+    <div class="diploma-name">BTS SIO — Option SISR</div>
+    <div class="mention" style="background:rgba(0,221,180,0.06);border:1px solid rgba(0,221,180,0.3);color:var(--accent);">⟳ &nbsp;En alternance</div>
+    <p class="diploma-text">
+      BTS Services Informatiques aux Organisations, option Solutions d'Infrastructure, Systèmes et Réseaux.
+      Formation axée sur l'administration réseau, la cybersécurité, la virtualisation et la gestion de parc.
+    </p>
+  </div>
+</div>
+
+<!-- ======= PROJETS ======= -->
+<div id="tab-projets" class="tab-content">
+  <div class="section-header">
+    <div class="section-icon">⚙</div>
+    <div>
+      <!-- [CORRIGÉ] ajout de l'identifiant project-section-title (utilisé par le filtre) -->
+      <div class="section-title" id="project-section-title">Projets & Travaux Pratiques (Tous)</div>
+      <div class="section-sub">BTS SIO SISR — Laboratoires & réalisations</div>
+    </div>
+  </div>
+
+  <!-- [CORRIGÉ] chaque carte a désormais un id unique (proj-1 … proj-25) au lieu de 26 × "proj-3",
+       et un attribut data-unit (U5 / U6 / U7) lu par le filtre.
+       Les TP sans unité indiquée ont data-unit="" : ils n'apparaissent que dans "Tous". -->
+  <div id="projects-container">
+
+    <div class="project-card" id="proj-1" data-unit="">
+      <div class="proj-num">TP — 001</div>
+      <div class="proj-title" contenteditable="true">Étude de cas – Réseau d’une entreprise multi-sites (TechCorp)</div>
+      <div class="proj-tags">
+        <span class="tag" contenteditable="true">Maquettage Physique de l'Infrastructure Multi-Sites (LAN & WAN)</span>
+        <span class="tag" contenteditable="true">Planification de l'Adressage IP et Configuration Initiale des Passerelles</span>
+        <span class="tag" contenteditable="true">Routage Inter-Agences, Services Applicatifs et Recette Technique</span>
+      </div>
+      <div class="proj-summary" contenteditable="true">
+        En tant que technicien réseau pour l'entreprise internationale TechCorp, la mission consiste à concevoir et interconnecter l'infrastructure de trois bâtiments géographiquement distants : le Siège à Paris (services Administratif, Technique et serveurs), l'agence régionale à Lyon, et l'agence internationale à Londres. L'objectif est de déployer un réseau d'entreprise segmenté, de configurer les interfaces de routage, de mettre en service des serveurs applicatifs (Web et DNS) et d'assurer une communication transversale complète entre tous les sites.
+      </div>
+      <div class="proj-actions">
+        <label class="btn-primary" style="cursor:pointer">⬆ &nbsp;Associer un PDF<input type="file" accept=".pdf" style="display:none" onchange="handlePdf(this,'proj-1')"></label>
+        <span class="pdf-name" id="pdf-name-proj-1">Aucun fichier</span>
+        <button class="btn-secondary" id="dl-proj-1" style="display:none" onclick="downloadPdf('proj-1')">⬇ Télécharger</button>
+      </div>
+    </div>
+
+    <div class="project-card" id="proj-2" data-unit="">
+      <div class="proj-num">TP — 002</div>
+      <div class="proj-title" contenteditable="true">Lab 0 : Introduction à Packet Tracer</div>
+      <div class="proj-tags">
+        <span class="tag" contenteditable="true">Installation, Prise en main et Sécurisation Initiale (CLI)</span>
+        <span class="tag" contenteditable="true">Analyse du Trafic en Mode Simulation et Table d'Adresses MAC</span>
+        <span class="tag" contenteditable="true">Planification et Audit d'un Plan d'Adressage IP Multi-Réseaux</span>
+      </div>
+      <div class="proj-summary" contenteditable="true">
+        Ce TP d'introduction a pour objectif de permettre aux étudiants de prendre en main le logiciel Cisco Packet Tracer. Les apprenants découvrent comment concevoir une maquette réseau, utiliser les types de câbles appropriés et appréhender l'administration initiale des routeurs et commutateurs via l'interface en ligne de commande (CLI).
+      </div>
+      <div class="proj-actions">
+        <label class="btn-primary" style="cursor:pointer">⬆ &nbsp;Associer un PDF<input type="file" accept=".pdf" style="display:none" onchange="handlePdf(this,'proj-2')"></label>
+        <span class="pdf-name" id="pdf-name-proj-2">Aucun fichier</span>
+        <button class="btn-secondary" id="dl-proj-2" style="display:none" onclick="downloadPdf('proj-2')">⬇ Télécharger</button>
+      </div>
+    </div>
+
+    <div class="project-card" id="proj-3" data-unit="">
+      <div class="proj-num">TP — 003</div>
+      <div class="proj-title" contenteditable="true">TP : STP (Spanning Tree Protocol) + Routeur — BTS SIO SISR</div>
+      <div class="proj-tags">
+        <span class="tag" contenteditable="true">Initialisation de l'Infrastructure et Adressage IP</span>
+        <span class="tag" contenteditable="true">Analyse, Audit et Forçage du Protocole STP</span>
+        <span class="tag" contenteditable="true">Optimisation, Sécurisation des Accès et Recette Connectivité</span>
+      </div>
+      <div class="proj-summary" contenteditable="true">
+        Ce travail pratique s'adresse aux étudiants de la filière SISR du BTS SIO. Son objectif principal est de comprendre le phénomène des boucles de commutation de niveau 2 et d'analyser comment le protocole STP (Spanning Tree Protocol) permet de les éliminer pour assurer la redondance de l'architecture sans perturber le trafic. La topologie proposée met en place un triangle de trois commutateurs interconnectés (SW1-SW2-SW3), créant ainsi une boucle physique, raccordé à un ordinateur (PC1) et à un routeur (R1) faisant office de passerelle.
+      </div>
+      <div class="proj-actions">
+        <label class="btn-primary" style="cursor:pointer">⬆ &nbsp;Associer un PDF<input type="file" accept=".pdf" style="display:none" onchange="handlePdf(this,'proj-3')"></label>
+        <span class="pdf-name" id="pdf-name-proj-3">Aucun fichier</span>
+        <button class="btn-secondary" id="dl-proj-3" style="display:none" onclick="downloadPdf('proj-3')">⬇ Télécharger</button>
+      </div>
+    </div>
+
+    <div class="project-card" id="proj-4" data-unit="">
+      <div class="proj-num">TP — 004</div>
+      <div class="proj-title" contenteditable="true">Infrastructure OSPF Simple (Sans LAN) - Cisco Packet Tracer</div>
+      <div class="proj-tags">
+        <span class="tag" contenteditable="true">Maquetatage Physique et Adressage des Liaisons Point-à-Point</span>
+        <span class="tag" contenteditable="true">Configuration Initiale des Équipements via la Ligne de Commande (CLI)</span>
+        <span class="tag" contenteditable="true">Implémentation et Initialisation du Protocole Dynamique OSPF</span>
+      </div>
+      <div class="proj-summary" contenteditable="true">
+        Ce guide de travaux pratiques a pour objectif la mise en place et le déploiement d'une infrastructure réseau minimale sous Cisco Packet Tracer. Le périmètre de l'exercice se concentre exclusivement sur l'interconnexion de trois routeurs (R1 ↔ R2 ↔ R3) sans intégrer de réseaux locaux terminaux (LAN). L'enjeu est de permettre à chaque routeur de découvrir automatiquement et de manière dynamique les routes vers l'ensemble de l'architecture grâce au protocole OSPF.
+      </div>
+      <div class="proj-actions">
+        <label class="btn-primary" style="cursor:pointer">⬆ &nbsp;Associer un PDF<input type="file" accept=".pdf" style="display:none" onchange="handlePdf(this,'proj-4')"></label>
+        <span class="pdf-name" id="pdf-name-proj-4">Aucun fichier</span>
+        <button class="btn-secondary" id="dl-proj-4" style="display:none" onclick="downloadPdf('proj-4')">⬇ Télécharger</button>
+      </div>
+    </div>
+
+    <div class="project-card" id="proj-5" data-unit="">
+      <div class="proj-num">TP — 005</div>
+      <div class="proj-title" contenteditable="true">TP – Routage statique et dynamique (RIP, EIGRP, OSPF)</div>
+      <div class="proj-tags">
+        <span class="tag" contenteditable="true">Initialisation de la Topologie et Diagnostic Local</span>
+        <span class="tag" contenteditable="true">Implémentation du Routage Statique et Analyse des Tables</span>
+        <span class="tag" contenteditable="true">Configuration Multi-Protocoles et Analyse Comparative du Routage Dynamique</span>
+      </div>
+      <div class="proj-summary" contenteditable="true">
+        Ce travail pratique est axé sur l'apprentissage et la mise en œuvre de l'aiguillage des paquets au sein d'une infrastructure réseau. L'objectif est de comprendre le rôle d'une table de routage et de comparer concrètement l'administration par routes statiques fixes face au déploiement automatique de protocoles de routage dynamique (RIP v2, EIGRP et OSPF). La topologie minimale interconnecte deux ordinateurs distants à travers deux routeurs
+      </div>
+      <div class="proj-actions">
+        <label class="btn-primary" style="cursor:pointer">⬆ &nbsp;Associer un PDF<input type="file" accept=".pdf" style="display:none" onchange="handlePdf(this,'proj-5')"></label>
+        <span class="pdf-name" id="pdf-name-proj-5">Aucun fichier</span>
+        <button class="btn-secondary" id="dl-proj-5" style="display:none" onclick="downloadPdf('proj-5')">⬇ Télécharger</button>
+      </div>
+    </div>
+
+    <div class="project-card" id="proj-6" data-unit="">
+      <div class="proj-num">TP — 006</div>
+      <div class="proj-title" contenteditable="true">TP Réseaux - Packet Tracer</div>
+      <div class="proj-tags">
+        <span class="tag" contenteditable="true">Conception et Validation d'un Réseau Local Isolé (LAN)</span>
+        <span class="tag" contenteditable="true">Extension Physique et Routage Inter-Réseaux</span>
+        <span class="tag" contenteditable="true">Configuration du Routeur et Routage IP en Ligne de Commande (CLI)</span>
+      </div>
+      <div class="proj-summary" contenteditable="true">
+        Ce travail pratique est conçu pour initier les étudiants aux bases de l'utilisation de l'outil Cisco Packet Tracer. L'objectif est d'apprendre à concevoir une maquette réseau, configurer l'adressage IP sur différents types d'équipements, tester la connectivité et comprendre concrètement la différence fondamentale entre un réseau local isolé (LAN) et plusieurs réseaux locaux interconnectés par un routeur.
+      </div>
+      <div class="proj-actions">
+        <label class="btn-primary" style="cursor:pointer">⬆ &nbsp;Associer un PDF<input type="file" accept=".pdf" style="display:none" onchange="handlePdf(this,'proj-6')"></label>
+        <span class="pdf-name" id="pdf-name-proj-6">Aucun fichier</span>
+        <button class="btn-secondary" id="dl-proj-6" style="display:none" onclick="downloadPdf('proj-6')">⬇ Télécharger</button>
+      </div>
+    </div>
+
+    <div class="project-card" id="proj-7" data-unit="">
+      <div class="proj-num">TP — 007</div>
+      <div class="proj-title" contenteditable="true">Checklist générale — Analyse DICT</div>
+      <div class="proj-tags">
+        <span class="tag" contenteditable="true">Évaluation des Critères de Sécurité (Disponibilité & Intégrité)</span>
+        <span class="tag" contenteditable="true">Protection des Informations et Audit des Traces (Confidentialité & Traçabilité)</span>
+        <span class="tag" contenteditable="true">Gouvernance de la Crise, Retex et Amélioration Continue</span>
+      </div>
+      <div class="proj-summary" contenteditable="true">
+        Ce document est un outil d'audit et d'évaluation méthodologique sous forme de liste de contrôle (checklist). Il a pour objectif de permettre à une organisation de mesurer et de documenter avec précision les impacts d'un incident de cybersécurité en s'appuyant sur les quatre critères fondamentaux de la sécurité de l'information : la Disponibilité, l'Intégrité, la Confidentialité et la Traçabilité (DICT).
+      </div>
+      <div class="proj-actions">
+        <label class="btn-primary" style="cursor:pointer">⬆ &nbsp;Associer un PDF<input type="file" accept=".pdf" style="display:none" onchange="handlePdf(this,'proj-7')"></label>
+        <span class="pdf-name" id="pdf-name-proj-7">Aucun fichier</span>
+        <button class="btn-secondary" id="dl-proj-7" style="display:none" onclick="downloadPdf('proj-7')">⬇ Télécharger</button>
+      </div>
+    </div>
+
+    <div class="project-card" id="proj-8" data-unit="">
+      <div class="proj-num">TP — 008</div>
+      <div class="proj-title" contenteditable="true">TP 01 : Analyse de la menace</div>
+      <div class="proj-tags">
+        <span class="tag" contenteditable="true">Recherche d'Information et Acquisition du Vocabulaire Cyber</span>
+        <span class="tag" contenteditable="true">Analyse Méthodologique de l'Incident (Critères DICT et Déroulement)</span>
+        <span class="tag" contenteditable="true">Évaluation des Impacts, Gestion de Crise et Restitution</span>
+      </div>
+      <div class="proj-summary" contenteditable="true">
+        Ce travail pratique s'inscrit dans un module de cybersécurité. Son objectif principal est de familiariser les étudiants avec la diversité des menaces informatiques (attaques, malwares, vulnérabilités). Les apprenants doivent acquérir le vocabulaire de la cybersécurité, mener des recherches d'informations et développer des compétences d'analyse afin de rédiger un rapport d'événement et de préparer une soutenance orale en groupe (de 4 personnes maximum).
+      </div>
+      <div class="proj-actions">
+        <label class="btn-primary" style="cursor:pointer">⬆ &nbsp;Associer un PDF<input type="file" accept=".pdf" style="display:none" onchange="handlePdf(this,'proj-8')"></label>
+        <span class="pdf-name" id="pdf-name-proj-8">Aucun fichier</span>
+        <button class="btn-secondary" id="dl-proj-8" style="display:none" onclick="downloadPdf('proj-8')">⬇ Télécharger</button>
+      </div>
+    </div>
+
+    <div class="project-card" id="proj-9" data-unit="U5">
+      <div class="proj-num">TP — 009</div>
+      <div class="proj-title" contenteditable="true">TP Linux Complet - BTS SIO 1</div>
+      <div class="proj-tags">
+        <span class="tag" contenteditable="true">Administration des Identités et Sécurisation des Accès</span>
+        <span class="tag" contenteditable="true">Déploiement et Personnalisation des Serveurs Web (Apache)</span>
+        <span class="tag" contenteditable="true">Haute Disponibilité, Répartition de Charge (HAProxy) et Sécurité</span>
+        <span class="tag" contenteditable="true">U5</span>
+      </div>
+      <div class="proj-summary" contenteditable="true">
+        Ce travail pratique s'adresse aux étudiants de BTS SIO 1ère année. Il a pour objectif de leur faire comprendre et manipuler les bases de l'administration Linux, de la gestion des droits, de la mise en place de services web, ainsi que des notions de haute disponibilité et de répartition de charge dans un contexte professionnel. L'architecture s'appuie sur trois machines Ubuntu Server interconnectées : deux serveurs web Apache (web1 et web2) et un répartiteur de charge HAProxy
+      </div>
+      <div class="proj-actions">
+        <label class="btn-primary" style="cursor:pointer">⬆ &nbsp;Associer un PDF<input type="file" accept=".pdf" style="display:none" onchange="handlePdf(this,'proj-9')"></label>
+        <span class="pdf-name" id="pdf-name-proj-9">Aucun fichier</span>
+        <button class="btn-secondary" id="dl-proj-9" style="display:none" onclick="downloadPdf('proj-9')">⬇ Télécharger</button>
+      </div>
+    </div>
+
+    <div class="project-card" id="proj-10" data-unit="U5">
+      <div class="proj-num">TP — 010</div>
+      <div class="proj-title" contenteditable="true">TP Entreprise : Gestion des utilisateurs, groupes et fichiers</div>
+      <div class="proj-tags">
+        <span class="tag" contenteditable="true">Administration et Structure des Identités (Utilisateurs & Groupes)</span>
+        <span class="tag" contenteditable="true">Structuration de l'Arborescence et Configuration des Droits Standards</span>
+        <span class="tag" contenteditable="true">Droits Avancés (Mécanismes Spéciaux), Scénarios Métiers et Audit</span>
+        <span class="tag" contenteditable="true">U5</span>
+      </div>
+      <div class="proj-summary" contenteditable="true">
+        En tant qu'administrateur système junior au sein de la société TechSolutions, la mission consiste à organiser et sécuriser l'environnement de stockage d'un serveur Linux. L'objectif de ce TP est de mettre en place une gestion rigoureuse des accès afin de garantir la confidentialité des données, la séparation stricte des droits entre les différentes équipes de la PME (Développement, Marketing, Support, Direction) et la traçabilité des modifications.
+      </div>
+      <div class="proj-actions">
+        <label class="btn-primary" style="cursor:pointer">⬆ &nbsp;Associer un PDF<input type="file" accept=".pdf" style="display:none" onchange="handlePdf(this,'proj-10')"></label>
+        <span class="pdf-name" id="pdf-name-proj-10">Aucun fichier</span>
+        <button class="btn-secondary" id="dl-proj-10" style="display:none" onclick="downloadPdf('proj-10')">⬇ Télécharger</button>
+      </div>
+    </div>
+
+    <div class="project-card" id="proj-11" data-unit="U5">
+      <div class="proj-num">TP — 011</div>
+      <div class="proj-title" contenteditable="true">TP COMPLET — Linux : Gestion des Utilisateurs, Groupes et Permissions</div>
+      <div class="proj-tags">
+        <span class="tag" contenteditable="true">Exploration du Système et Fichiers de Configuration Éléments</span>
+        <span class="tag" contenteditable="true">Gestion Avancée des Comptes, Arborescences et Droits Spéciaux</span>
+        <span class="tag" contenteditable="true">Gouvernance des Privilèges Sudo et Traçabilité (Audit)</span>
+        <span class="tag" contenteditable="true">U5</span>
+      </div>
+      <div class="proj-summary" contenteditable="true">
+        Ce travail pratique complet de niveau BTS a pour objectif d'enseigner aux étudiants les mécanismes fondamentaux et avancés de la gestion des identités, des systèmes de fichiers et de la sécurité des accès sous Linux. À travers des manipulations concrètes (sur fichiers de configuration, commandes d'administration et gestion des privilèges), les apprenants acquièrent une rigueur indispensable à l'administration sécurisée d'un système d'exploitation.
+      </div>
+      <div class="proj-actions">
+        <label class="btn-primary" style="cursor:pointer">⬆ &nbsp;Associer un PDF<input type="file" accept=".pdf" style="display:none" onchange="handlePdf(this,'proj-11')"></label>
+        <span class="pdf-name" id="pdf-name-proj-11">Aucun fichier</span>
+        <button class="btn-secondary" id="dl-proj-11" style="display:none" onclick="downloadPdf('proj-11')">⬇ Télécharger</button>
+      </div>
+    </div>
+
+    <div class="project-card" id="proj-12" data-unit="U5">
+      <div class="proj-num">TP — 012</div>
+      <div class="proj-title" contenteditable="true">TP : Gestion des fichiers et des droits sous Linux</div>
+      <div class="proj-tags">
+        <span class="tag" contenteditable="true">Manipulation de l'Arborescence et Gestion des Fichiers</span>
+        <span class="tag" contenteditable="true">Administration Avancée des Droits et Droits Spéciaux</span>
+        <span class="tag" contenteditable="true">Analyse Théorique, Calculs et Dépannage (Audit)</span>
+        <span class="tag" contenteditable="true">U5</span>
+      </div>
+      <div class="proj-summary" contenteditable="true">
+        L'objectif de ce TP est de permettre aux apprenants de maîtriser la manipulation de l'arborescence Linux et de comprendre en profondeur le système de gestion des droits et des permissions (droits standards et avancés). Les exercices demandent une mise en pratique concrète des commandes de base dans un environnement de test (machine virtuelle ou conteneur) afin d'acquérir les compétences fondamentales d'un administrateur système.
+      </div>
+      <div class="proj-actions">
+        <label class="btn-primary" style="cursor:pointer">⬆ &nbsp;Associer un PDF<input type="file" accept=".pdf" style="display:none" onchange="handlePdf(this,'proj-12')"></label>
+        <span class="pdf-name" id="pdf-name-proj-12">Aucun fichier</span>
+        <button class="btn-secondary" id="dl-proj-12" style="display:none" onclick="downloadPdf('proj-12')">⬇ Télécharger</button>
+      </div>
+    </div>
+
+    <div class="project-card" id="proj-13" data-unit="">
+      <div class="proj-num">TP — 013</div>
+      <div class="proj-title" contenteditable="true">Atelier 4 : Étude, évaluation et proposition d'améliorations d'un site web d'entreprise</div>
+      <div class="proj-tags">
+        <span class="tag" contenteditable="true">Analyse Fonctionnelle et Cartographie des Flux</span>
+        <span class="tag" contenteditable="true">Audit Technique et Identification des Vulnérabilités Web</span>
+        <span class="tag" contenteditable="true">Évaluation des Risques Cyber et Plan de Remédiation</span>
+        <span class="tag" contenteditable="true">Atelier 4</span>
+      </div>
+      <div class="proj-summary" contenteditable="true">
+        Face à une augmentation des tentatives de fraude, la direction de la banque en ligne fictive NovaBank demande une évaluation complète de la sécurité de sa plateforme web (développée en PHP/SQLite et hébergée sous Ubuntu Server). L'objectif est d'adopter la posture d'un auditeur afin d'analyser l'application, de découvrir les failles de sécurité volontairement intégrées, d'en évaluer les risques métiers et de proposer des corrections techniques concrètes.
+      </div>
+      <div class="proj-actions">
+        <label class="btn-primary" style="cursor:pointer">⬆ &nbsp;Associer un PDF<input type="file" accept=".pdf" style="display:none" onchange="handlePdf(this,'proj-13')"></label>
+        <span class="pdf-name" id="pdf-name-proj-13">Aucun fichier</span>
+        <button class="btn-secondary" id="dl-proj-13" style="display:none" onclick="downloadPdf('proj-13')">⬇ Télécharger</button>
+      </div>
+    </div>
+
+    <div class="project-card" id="proj-14" data-unit="U5">
+      <div class="proj-num">TP — 014</div>
+      <div class="proj-title" contenteditable="true">TP Réseau & Web - DNS (Bind9) et Serveur Web (Apache2)</div>
+      <div class="proj-tags">
+        <span class="tag" contenteditable="true">Installation et Déclaration de la Zone DNS (Bind9)</span>
+        <span class="tag" contenteditable="true">Déploiement et Personnalisation du Serveur Web (Apache2)</span>
+        <span class="tag" contenteditable="true">Interconnexion, Recette Technique et Audits de Résolution</span>
+        <span class="tag" contenteditable="true">U5</span>
+      </div>
+      <div class="proj-summary" contenteditable="true">
+        Destiné aux étudiants de niveau débutant (BTS SIO 1ère année), ce TP vise à faire comprendre de manière concrète l'architecture client/serveur de l'Internet. L'objectif est d'apprendre à déployer séparément deux services fondamentaux de l'infrastructure web sous Linux (Ubuntu/Debian) — la résolution de noms de domaine et l'hébergement de pages — afin de permettre à un utilisateur d'accéder à un site en saisissant une adresse textuelle plutôt qu'une adresse IP.
+      </div>
+      <div class="proj-actions">
+        <label class="btn-primary" style="cursor:pointer">⬆ &nbsp;Associer un PDF<input type="file" accept=".pdf" style="display:none" onchange="handlePdf(this,'proj-14')"></label>
+        <span class="pdf-name" id="pdf-name-proj-14">Aucun fichier</span>
+        <button class="btn-secondary" id="dl-proj-14" style="display:none" onclick="downloadPdf('proj-14')">⬇ Télécharger</button>
+      </div>
+    </div>
+
+    <div class="project-card" id="proj-15" data-unit="U7">
+      <div class="proj-num">TP — 015</div>
+      <div class="proj-title" contenteditable="true">PROJET PÉDAGOGIQUE — Menaces sur l'identité numérique</div>
+      <div class="proj-tags">
+        <span class="tag" contenteditable="true">Analyse Théorique et Typologie des Menaces (Étudiant 1)</span>
+        <span class="tag" contenteditable="true">Conception et Développement d'un PoC Technique (Étudiant 2)</span>
+        <span class="tag" contenteditable="true">Gouvernance Éthique, Recommandations et Restitution</span>
+        <span class="tag" contenteditable="true">U7</span>
+      </div>
+      <div class="proj-summary" contenteditable="true">
+        Réalisé en binôme, ce projet s'inscrit dans le cadre de l'analyse des risques cyber et de l'ingénierie sociale. L'objectif est de comprendre en profondeur les mécanismes techniques et psychologiques mis en œuvre lors des attaques ciblant l'identité numérique, de concevoir une démonstration technique offensive dans un cadre strictement légal, et de proposer des mesures de protection adaptées pour les utilisateurs.
+      </div>
+      <div class="proj-actions">
+        <label class="btn-primary" style="cursor:pointer">⬆ &nbsp;Associer un PDF<input type="file" accept=".pdf" style="display:none" onchange="handlePdf(this,'proj-15')"></label>
+        <span class="pdf-name" id="pdf-name-proj-15">Aucun fichier</span>
+        <button class="btn-secondary" id="dl-proj-15" style="display:none" onclick="downloadPdf('proj-15')">⬇ Télécharger</button>
+      </div>
+    </div>
+
+    <div class="project-card" id="proj-16" data-unit="U7">
+      <div class="proj-num">TP — 016</div>
+      <div class="proj-title" contenteditable="true">Sécurisation des accès et identités (MFA, PAM)</div>
+      <div class="proj-tags">
+        <span class="tag" contenteditable="true">Fondements Théoriques de la Gestion des Accès (MFA, PAM, Annuaires)</span>
+        <span class="tag" contenteditable="true">Conception Algorithmique et Durcissement des Mots de Passe</span>
+        <span class="tag" contenteditable="true">Gouvernance, Bonnes Pratiques et Évaluation des Politiques</span>
+        <span class="tag" contenteditable="true">U7</span>
+      </div>
+      <div class="proj-summary" contenteditable="true">
+        Dans le cadre du module de cybersécurité (Niveau BTS SIO), l'objectif de ce TP de 4 heures est de comprendre et de mettre en œuvre les meilleures pratiques de sécurité liées à la gestion des identités et des accès (IAM). Les étudiants explorent les mécanismes de protection contre les attaques par usurpation d'identité et apprennent à déployer des politiques d'habilitation rigoureuses.
+      </div>
+      <div class="proj-actions">
+        <label class="btn-primary" style="cursor:pointer">⬆ &nbsp;Associer un PDF<input type="file" accept=".pdf" style="display:none" onchange="handlePdf(this,'proj-16')"></label>
+        <span class="pdf-name" id="pdf-name-proj-16">Aucun fichier</span>
+        <button class="btn-secondary" id="dl-proj-16" style="display:none" onclick="downloadPdf('proj-16')">⬇ Télécharger</button>
+      </div>
+    </div>
+
+    <div class="project-card" id="proj-17" data-unit="U6">
+      <div class="proj-num">TP — 017</div>
+      <div class="proj-title" contenteditable="true">TP Cisco Packet Tracer : Création d'une Campus Area Network (CAN)</div>
+      <div class="proj-tags">
+        <span class="tag" contenteditable="true">Déploiement de l'Architecture Physique du Campus</span>
+        <span class="tag" contenteditable="true">Planification et Configuration de l'Adressage IP</span>
+        <span class="tag" contenteditable="true">Routage, Validation de la Connectivité et Accès Internet</span>
+        <span class="tag" contenteditable="true">U6</span>
+      </div>
+      <div class="proj-summary" contenteditable="true">
+        En tant que technicien réseau stagiaire au sein de la PME TechSolutions, la mission consiste à concevoir et déployer un réseau de campus (CAN) sur Cisco Packet Tracer. L'objectif est d'interconnecter deux bâtiments d'un même site (le Bâtiment A abritant la Direction/RH et le Bâtiment B abritant le Développement/Support) afin d'assurer la communication interne entre les départements, de leur fournir un accès à Internet et de proposer une architecture facilement évolutive.
+      </div>
+      <div class="proj-actions">
+        <label class="btn-primary" style="cursor:pointer">⬆ &nbsp;Associer un PDF<input type="file" accept=".pdf" style="display:none" onchange="handlePdf(this,'proj-17')"></label>
+        <span class="pdf-name" id="pdf-name-proj-17">Aucun fichier</span>
+        <button class="btn-secondary" id="dl-proj-17" style="display:none" onclick="downloadPdf('proj-17')">⬇ Télécharger</button>
+      </div>
+    </div>
+
+    <div class="project-card" id="proj-18" data-unit="U6">
+      <div class="proj-num">TP — 018</div>
+      <div class="proj-title" contenteditable="true">TP Réseau Avancé - Conception, Configuration et Sécurisation d'une Infrastructure d'Entreprise</div>
+      <div class="proj-tags">
+        <span class="tag" contenteditable="true">Segmentation, Infrastructure d'Accès et Services (Couche 2 & 3)</span>
+        <span class="tag" contenteditable="true">Routage Dynamique Inter-Sites et Accès Internet (WAN)</span>
+        <span class="tag" contenteditable="true">Durcissement de la Sécurité (Cybersécurité) et Audit de la Maquette</span>
+        <span class="tag" contenteditable="true">U6</span>
+      </div>
+      <div class="proj-summary" contenteditable="true">
+        L'entreprise fictive TechCorp International souhaite moderniser son infrastructure réseau afin d'interconnecter son siège et deux agences distantes. Réalisé sur Cisco Packet Tracer, ce projet de niveau professionnel demande à l'étudiant de concevoir l'architecture, de programmer de bout en bout l'ensemble des services réseau et d'appliquer une politique stricte de cybersécurité, pour finalement produire une documentation technique détaillée.
+      </div>
+      <div class="proj-actions">
+        <label class="btn-primary" style="cursor:pointer">⬆ &nbsp;Associer un PDF<input type="file" accept=".pdf" style="display:none" onchange="handlePdf(this,'proj-18')"></label>
+        <span class="pdf-name" id="pdf-name-proj-18">Aucun fichier</span>
+        <button class="btn-secondary" id="dl-proj-18" style="display:none" onclick="downloadPdf('proj-18')">⬇ Télécharger</button>
+      </div>
+    </div>
+
+    <div class="project-card" id="proj-19" data-unit="U6">
+      <div class="proj-num">TP — 019</div>
+      <div class="proj-title" contenteditable="true">TP Réseaux BTS SIO - ACL & VLSM (Version Complète et Complexe)</div>
+      <div class="proj-tags">
+        <span class="tag" contenteditable="true">Configuration d'Infrastructure et Routage Statique Multi-Routeurs</span>
+        <span class="tag" contenteditable="true">VLSM</span>
+        <span class="tag" contenteditable="true">ACL Étendues</span>
+        <span class="tag" contenteditable="true">U6</span>
+      </div>
+      <div class="proj-summary" contenteditable="true">
+        Dans le contexte d'une entreprise possédant trois sites géographiquement distincts et interconnectés via des routeurs, l'objectif est de segmenter de manière optimale l'espace d'adressage, de configurer le routage entre les infrastructures et de mettre en œuvre des politiques de sécurité strictes pour contrôler les flux inter-services.
+      </div>
+      <div class="proj-actions">
+        <label class="btn-primary" style="cursor:pointer">⬆ &nbsp;Associer un PDF<input type="file" accept=".pdf" style="display:none" onchange="handlePdf(this,'proj-19')"></label>
+        <span class="pdf-name" id="pdf-name-proj-19">Aucun fichier</span>
+        <button class="btn-secondary" id="dl-proj-19" style="display:none" onclick="downloadPdf('proj-19')">⬇ Télécharger</button>
+      </div>
+    </div>
+
+    <div class="project-card" id="proj-20" data-unit="U7">
+      <div class="proj-num">TP — 020</div>
+      <div class="proj-title" contenteditable="true">TP Cryptographie : César + Vigenère</div>
+      <div class="proj-tags">
+        <span class="tag" contenteditable="true">Chiffrement et Déchiffrement</span>
+        <span class="tag" contenteditable="true">IHM</span>
+        <span class="tag" contenteditable="true">Analyse Théorique et Cryptanalyse</span>
+        <span class="tag" contenteditable="true">U7</span>
+      </div>
+      <div class="proj-summary" contenteditable="true">
+        L'objectif de ce TP est de concevoir et de développer un programme d'initiation en Python permettant de sécuriser un message textuel. Le défi consiste à combiner deux techniques historiques de chiffrement par substitution (le chiffre de César et le chiffre de Vigenère) afin d'en comprendre les mécanismes et d'analyser l'impact de leur superposition sur la sécurité globale.
+      </div>
+      <div class="proj-actions">
+        <label class="btn-primary" style="cursor:pointer">⬆ &nbsp;Associer un PDF<input type="file" accept=".pdf" style="display:none" onchange="handlePdf(this,'proj-20')"></label>
+        <span class="pdf-name" id="pdf-name-proj-20">Aucun fichier</span>
+        <button class="btn-secondary" id="dl-proj-20" style="display:none" onclick="downloadPdf('proj-20')">⬇ Télécharger</button>
+      </div>
+    </div>
+
+    <div class="project-card" id="proj-21" data-unit="U7">
+      <div class="proj-num">TP — 021</div>
+      <div class="proj-title" contenteditable="true">TP CYBER — Analyse et implémentation Base64</div>
+      <div class="proj-tags">
+        <span class="tag" contenteditable="true">Théorique et Rétro-ingénierie du Protocole</span>
+        <span class="tag" contenteditable="true">Conception Algorithmique et Résolution de Cas Réel</span>
+        <span class="tag" contenteditable="true">Audit de Sécurité et Évaluation des Risques</span>
+        <span class="tag" contenteditable="true">U7</span>
+      </div>
+      <div class="proj-summary" contenteditable="true">
+        Dans le rôle d'un analyste en cybersécurité, la mission consiste à étudier le mécanisme de codage Base64 à la suite de l'interception de communications réseau suspectes. L'objectif global est de comprendre la différence fondamentale entre encodage et chiffrement, de décortiquer mathématiquement le passage du binaire au Base64, et de concevoir la logique d'un algorithme capable d'encoder et de décoder des données sans l'aide de bibliothèques tierces.
+      </div>
+      <div class="proj-actions">
+        <label class="btn-primary" style="cursor:pointer">⬆ &nbsp;Associer un PDF<input type="file" accept=".pdf" style="display:none" onchange="handlePdf(this,'proj-21')"></label>
+        <span class="pdf-name" id="pdf-name-proj-21">Aucun fichier</span>
+        <button class="btn-secondary" id="dl-proj-21" style="display:none" onclick="downloadPdf('proj-21')">⬇ Télécharger</button>
+      </div>
+    </div>
+
+    <div class="project-card" id="proj-22" data-unit="U6">
+      <div class="proj-num">TP — 022</div>
+      <div class="proj-title" contenteditable="true">Étude de cas PME : Conception d'un plan réseau complet</div>
+      <div class="proj-tags">
+        <span class="tag" contenteditable="true">Architecture, Schématisation et Simulation</span>
+        <span class="tag" contenteditable="true">VLSM</span>
+        <span class="tag" contenteditable="true">Wireshark, Diagnostics et Sécurisation</span>
+        <span class="tag" contenteditable="true">U6</span>
+      </div>
+      <div class="proj-summary" contenteditable="true">
+        Dans le cadre du déménagement de la PME TechnoPrint (spécialisée dans l'impression industrielle) dans de nouveaux locaux, l'objectif est de concevoir de bout en bout une infrastructure réseau fiable, segmentée et sécurisée. En tant qu'administrateur, la mission consiste à dimensionner le réseau, découper la plage d'adresses disponible (192.168.50.0/24) , concevoir l'architecture physique/logique, et analyser le comportement du réseau ainsi que ses anomalies.
+      </div>
+      <div class="proj-actions">
+        <label class="btn-primary" style="cursor:pointer">⬆ &nbsp;Associer un PDF<input type="file" accept=".pdf" style="display:none" onchange="handlePdf(this,'proj-22')"></label>
+        <span class="pdf-name" id="pdf-name-proj-22">Aucun fichier</span>
+        <button class="btn-secondary" id="dl-proj-22" style="display:none" onclick="downloadPdf('proj-22')">⬇ Télécharger</button>
+      </div>
+    </div>
+
+    <!-- [CORRIGÉ] l'ancien "TP — 023" était un doublon exact du TP 022 : il a été supprimé.
+         Les TP suivants sont renumérotés (023, 024, 025). -->
+
+    <div class="project-card" id="proj-23" data-unit="U7">
+      <div class="proj-num">TP — 023</div>
+      <div class="proj-title" contenteditable="true">PoC et recherches sur le chiffrement symétrique</div>
+      <div class="proj-tags">
+        <span class="tag" contenteditable="true">Cryptographie Symétrique</span>
+        <span class="tag" contenteditable="true">PoC</span>
+        <span class="tag" contenteditable="true">Analyse Critique de la Sécurité</span>
+        <span class="tag" contenteditable="true">U7</span>
+      </div>
+      <div class="proj-summary" contenteditable="true">
+        Dans le rôle d'un technicien informatique chargé de sécuriser les échanges de données d'une entreprise, la mission consiste à étudier les fondements du chiffrement symétrique, puis à concevoir un prototype fonctionnel ou PoC (Proof of Concept) de chiffrement et de déchiffrement. L'objectif global est d'associer la théorie à la pratique pour développer une solution sécurisée, documentée et conforme aux bonnes pratiques
+      </div>
+      <div class="proj-actions">
+        <label class="btn-primary" style="cursor:pointer">⬆ &nbsp;Associer un PDF<input type="file" accept=".pdf" style="display:none" onchange="handlePdf(this,'proj-23')"></label>
+        <span class="pdf-name" id="pdf-name-proj-23">Aucun fichier</span>
+        <button class="btn-secondary" id="dl-proj-23" style="display:none" onclick="downloadPdf('proj-23')">⬇ Télécharger</button>
+      </div>
+    </div>
+
+    <div class="project-card" id="proj-24" data-unit="U5">
+      <div class="proj-num">TP — 024</div>
+      <div class="proj-title" contenteditable="true">Découverte et Installation de GLPI</div>
+      <div class="proj-tags">
+        <span class="tag" contenteditable="true">Infrastructure Serveur</span>
+        <span class="tag" contenteditable="true">Automatisation du parc informatique</span>
+        <span class="tag" contenteditable="true">Helpdesk</span>
+        <span class="tag" contenteditable="true">U5</span>
+      </div>
+      <div class="proj-summary" contenteditable="true">
+        Dans le cadre d'un rôle de technicien informatique au sein d'une petite entreprise, l'objectif est de déployer et de configurer l'outil de gestion de parc et d'incidents GLPI dans un environnement virtuel de test (composé de 3 machines virtuelles maximum).
+      </div>
+      <div class="proj-actions">
+        <label class="btn-primary" style="cursor:pointer">⬆ &nbsp;Associer un PDF<input type="file" accept=".pdf" style="display:none" onchange="handlePdf(this,'proj-24')"></label>
+        <span class="pdf-name" id="pdf-name-proj-24">Aucun fichier</span>
+        <button class="btn-secondary" id="dl-proj-24" style="display:none" onclick="downloadPdf('proj-24')">⬇ Télécharger</button>
+      </div>
+    </div>
+
+    <div class="project-card" id="proj-25" data-unit="U5">
+      <div class="proj-num">TP — 025</div>
+      <div class="proj-title" contenteditable="true">Active Directory — Gestion des utilisateurs et GPO</div>
+      <div class="proj-tags">
+        <span class="tag" contenteditable="true">Windows Server</span>
+        <span class="tag" contenteditable="true">Active Directory</span>
+        <span class="tag" contenteditable="true">GPO</span>
+        <span class="tag" contenteditable="true">U5</span>
+      </div>
+      <div class="proj-summary" contenteditable="true">
+        L'entreprise fictive TechNova souhaite abandonner la gestion décentralisée en groupe de travail (workgroup) pour passer à une gestion centralisée des utilisateurs et des ressources grâce à Active Directory. L'objectif est de déployer un environnement de test à trois machines pour maîtriser les bases de l'administration d'un domaine.
+      </div>
+      <div class="proj-actions">
+        <label class="btn-primary" style="cursor:pointer">⬆ &nbsp;Associer un PDF<input type="file" accept=".pdf" style="display:none" onchange="handlePdf(this,'proj-25')"></label>
+        <span class="pdf-name" id="pdf-name-proj-25">Aucun fichier</span>
+        <button class="btn-secondary" id="dl-proj-25" style="display:none" onclick="downloadPdf('proj-25')">⬇ Télécharger</button>
+      </div>
+    </div>
+
+  </div><!-- /projects-container -->
+  <div class="empty-state" id="projects-empty">Aucun projet pour cette unité pour l'instant.</div>
+</div><!-- /tab-projets -->
+
+<!-- ======= VEILLES TECHNOLOGIQUES ======= -->
+<!-- [CORRIGÉ] id unique "tab-veilles" (avant : doublon "tab-projets"),
+     conteneur "veilles-container" (avant : doublon "projects-container"),
+     et les deux <div> sont maintenant FERMÉES : avant, Compétences / Alternance / Contact
+     se retrouvaient imbriqués dans ce bloc caché et s'affichaient vides. -->
+<div id="tab-veilles" class="tab-content">
+  <div class="section-header">
+    <div class="section-icon">◎</div>
+    <div>
+      <div class="section-title" id="veille-section-title">Veilles technologiques (Toutes)</div>
+      <div class="section-sub">BTS SIO SISR — Suivi de l'actualité technique</div>
+    </div>
+  </div>
+
+  <div id="veilles-container">
+    <!-- [CORRIGÉ] l'ancienne carte "XEFE001" était une copie du TP 001.
+         Remplacée par un modèle à compléter. Pour chaque veille, indiquer data-cat :
+         "cyber", "virtu" ou "reseaux". -->
+    <div class="project-card veille-card" id="veille-1" data-cat="cyber">
+      <div class="proj-num">VEILLE — 001</div>
+      <div class="proj-title" contenteditable="true" data-placeholder="Sujet de la veille">Sujet de la veille à compléter</div>
+      <div class="proj-tags">
+        <span class="tag" contenteditable="true">Cybersécurité & Défense des Réseaux</span>
+        <span class="tag" contenteditable="true">Sources</span>
+      </div>
+      <div class="proj-summary" contenteditable="true" data-placeholder="Résumé de la veille...">
+        Décris ici le sujet suivi, les sources utilisées (sites, flux RSS, newsletters…) et ce que tu en retiens.
+      </div>
+      <div class="proj-actions">
+        <label class="btn-primary" style="cursor:pointer">⬆ &nbsp;Associer un PDF<input type="file" accept=".pdf" style="display:none" onchange="handlePdf(this,'veille-1')"></label>
+        <span class="pdf-name" id="pdf-name-veille-1">Aucun fichier</span>
+        <button class="btn-secondary" id="dl-veille-1" style="display:none" onclick="downloadPdf('veille-1')">⬇ Télécharger</button>
+      </div>
+    </div>
+  </div><!-- /veilles-container -->
+  <div class="empty-state" id="veilles-empty">Aucune veille dans cette catégorie pour l'instant.</div>
+</div><!-- /tab-veilles -->
+
+<!-- ======= COMPÉTENCES ======= -->
+<div id="tab-competences" class="tab-content">
+  <div class="section-header">
+    <div class="section-icon">◇</div>
+    <div>
+      <div class="section-title">Compétences</div>
+      <div class="section-sub">BTS SIO option SISR — en acquisition</div>
+    </div>
+  </div>
+
+  <div class="skills-grid">
+
+    <div class="skill-cat">
+      <div class="skill-cat-title">🔒 Cybersécurité</div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name-label">Pare-feu & Filtrage</span><span class="skill-lvl">En cours</span></div><div class="skill-bar"><div class="skill-fill" style="width:75%"></div></div></div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name-label">VPN (IPsec, SSL)</span><span class="skill-lvl">En cours</span></div><div class="skill-bar"><div class="skill-fill" style="width:60%"></div></div></div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name-label">Détection d'intrusion</span><span class="skill-lvl">En cours</span></div><div class="skill-bar"><div class="skill-fill" style="width:40%"></div></div></div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name-label">Analyse de vulnérabilités</span><span class="skill-lvl">En cours</span></div><div class="skill-bar"><div class="skill-fill" style="width:35%"></div></div></div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name-label">Chiffrement & PKI</span><span class="skill-lvl">Intermédiaire</span></div><div class="skill-bar"><div class="skill-fill" style="width:55%"></div></div></div>
+    </div>
+
+    <div class="skill-cat">
+      <div class="skill-cat-title">🌐 Réseaux</div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name-label">TCP/IP, VLAN, Routage</span><span class="skill-lvl">Avancé</span></div><div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div></div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name-label">DNS, DHCP, HTTP(S)</span><span class="skill-lvl">Avancé</span></div><div class="skill-bar"><div class="skill-fill" style="width:78%"></div></div></div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name-label">Cisco IOS</span><span class="skill-lvl">Intermédiaire</span></div><div class="skill-bar"><div class="skill-fill" style="width:58%"></div></div></div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name-label">Wireshark / Analyse</span><span class="skill-lvl">Intermédiaire</span></div><div class="skill-bar"><div class="skill-fill" style="width:62%"></div></div></div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name-label">Packet Tracer / GNS3</span><span class="skill-lvl">En cours</span></div><div class="skill-bar"><div class="skill-fill" style="width:45%"></div></div></div>
+    </div>
+
+    <div class="skill-cat">
+      <div class="skill-cat-title">🖥 Systèmes</div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name-label">Linux (Debian, Ubuntu)</span><span class="skill-lvl">Avancé</span></div><div class="skill-bar"><div class="skill-fill" style="width:76%"></div></div></div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name-label">Windows Server / AD</span><span class="skill-lvl">Intermédiaire</span></div><div class="skill-bar"><div class="skill-fill" style="width:65%"></div></div></div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name-label">Virtualisation (VMware…)</span><span class="skill-lvl">Avancé</span></div><div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div></div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name-label">Bash & Scripts Shell</span><span class="skill-lvl">Intermédiaire</span></div><div class="skill-bar"><div class="skill-fill" style="width:58%"></div></div></div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name-label">PowerShell</span><span class="skill-lvl">En cours</span></div><div class="skill-bar"><div class="skill-fill" style="width:40%"></div></div></div>
+    </div>
+
+    <div class="skill-cat">
+      <div class="skill-cat-title">💻 Développement & Outils</div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name-label">HTML / CSS / SQL</span><span class="skill-lvl">En cours</span></div><div class="skill-bar"><div class="skill-fill" style="width:65%"></div></div></div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name-label">Git / GitHub</span><span class="skill-lvl">En cours</span></div><div class="skill-bar"><div class="skill-fill" style="width:42%"></div></div></div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name-label">GLPI / Gestion de parc</span><span class="skill-lvl">En cours</span></div><div class="skill-bar"><div class="skill-fill" style="width:38%"></div></div></div>
+      <div class="skill-item"><div class="skill-row"><span class="skill-name-label">Support N1/N2</span><span class="skill-lvl">Intermédiaire</span></div><div class="skill-bar"><div class="skill-fill" style="width:55%"></div></div></div>
+    </div>
+
+  </div>
+
+  <div class="card">
+    <div style="font-family:'Cinzel',serif;font-size:0.78rem;color:var(--accent3);letter-spacing:3px;margin-bottom:16px;">🏅 Certifications & Formations</div>
+    <ul style="list-style:none;padding:0;">
+      <li style="padding:8px 0;border-bottom:1px solid rgba(0,221,180,0.05);font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:300;color:var(--text2);">◦ &nbsp;Pix — Compétences numériques (certification officielle)</li>
+      <li style="padding:8px 0;border-bottom:1px solid rgba(0,221,180,0.05);font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:300;color:var(--text2);">◦ &nbsp;Cisco Packet Tracer — Initiation aux réseaux</li>
+      <li style="padding:8px 0;font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:300;color:var(--text2);">◦ &nbsp;Notions de conformité RGPD</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ======= ALTERNANCE ======= -->
+<div id="tab-alternance" class="tab-content">
+  <div class="section-header">
+    <div class="section-icon">🏢</div>
+    <div>
+      <div class="section-title">Alternance</div>
+      <div class="section-sub">Expérience professionnelle en entreprise</div>
+    </div>
+  </div>
+
+  <div class="alt-hero corners">
+    <div class="c-tl"></div><div class="c-tr"></div><div class="c-bl"></div><div class="c-br"></div>
+    <div class="alt-company" contenteditable="true" data-placeholder="Nom de l'entreprise">EDF</div>
+    <div class="alt-role" contenteditable="true" data-placeholder="Intitulé du poste">Responsable de SI métier— Alternante</div>
+    <div class="alt-meta">
+      <div class="alt-meta-item">📅 <span contenteditable="true" data-placeholder="Période">Sept. 2025 — Août 2027</span></div>
+      <div class="alt-meta-item">📍 <span contenteditable="true" data-placeholder="Ville">Montévrain, Île-de-France</span></div>
+      <div class="alt-meta-item">🏭 <span contenteditable="true" data-placeholder="Secteur">Nucléaire / Electricité</span></div>
+      <div class="alt-meta-item">👥 <span contenteditable="true" data-placeholder="Taille">197 363</span></div>
+    </div>
+    <p contenteditable="true" data-placeholder="Présentation de l'entreprise..." style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:300;color:var(--text2);line-height:1.9;">
+      Le groupe Electricité de France (EDF) est la principale entreprise de production, de transport et de fourniture d’électricité en France. La société intervient ainsi sur l’ensemble des métiers de l’électricité. Sa production d’électricité est caractérisée par la prépondérance de l’énergie nucléaire. EDF est le premier producteur électronucléaire mondial
+    </p>
+  </div>
+
+  <div class="card" style="margin-bottom:22px;">
+    <div class="alt-section">⚡ Missions confiées</div>
+    <ul class="mission-list" id="mission-list">
+      <li class="mission-item">
+        <div class="mission-dot"></div>
+        <div class="mission-txt" contenteditable="true">Administration et supervision du parc informatique (postes, serveurs, équipements réseau)</div>
+      </li>
+      <li class="mission-item">
+        <div class="mission-dot"></div>
+        <div class="mission-txt" contenteditable="true">Support utilisateurs : gestion de tickets</div>
+      </li>
+      <li class="mission-item">
+        <div class="mission-dot"></div>
+        <div class="mission-txt" contenteditable="true">Gestion des projet et réalisation de ceux ci</div>
+      </li>
+    </ul>
+    <button class="add-btn" onclick="addMission()">+ &nbsp;Ajouter une mission</button>
+  </div>
+
+  <div class="card" style="margin-bottom:22px;">
+    <div class="alt-section" style="color:var(--accent3);">◈ Compétences développées</div>
+    <ul class="mission-list" id="comp-alt-list">
+      <li class="mission-item">
+        <div class="mission-dot" style="background:var(--accent3);box-shadow:0 0 6px var(--accent3);"></div>
+        <div class="mission-txt" contenteditable="true">Gestion de parc informatique avec le suivis des postes</div>
+      </li>
+      <li class="mission-item">
+        <div class="mission-dot" style="background:var(--accent3);box-shadow:0 0 6px var(--accent3);"></div>
+        <div class="mission-txt" contenteditable="true">PowerBI avec en plus une formation, apprentissage des powerapps</div>
+      </li>
+      <li class="mission-item">
+        <div class="mission-dot" style="background:var(--accent3);box-shadow:0 0 6px var(--accent3);"></div>
+        <div class="mission-txt" contenteditable="true">Rédaction de documentations techniques et procédures (En cours d'apprentissage)</div>
+      </li>
+    </ul>
+    <button class="add-btn" onclick="addCompAlt()">+ &nbsp;Ajouter une compétence</button>
+  </div>
+</div>
+
+<!-- ======= CONTACT ======= -->
+<div id="tab-contact" class="tab-content">
+  <div class="section-header">
+    <div class="section-icon">✉</div>
+    <div>
+      <div class="section-title">Contact</div>
+      <div class="section-sub">Prendre contact · Télécharger mon CV</div>
+    </div>
+  </div>
+
+  <div class="contact-layout">
+
+    <div class="contact-form">
+      <div style="font-family:'Cinzel',serif;font-size:0.85rem;color:var(--text);letter-spacing:3px;margin-bottom:4px;">Envoyer un Message</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.9rem;color:var(--text3);margin-bottom:24px;">→ jade.vincent77@ynov.com</div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="cf-prenom">Prénom *</label>
+          <input type="text" class="form-input" id="cf-prenom" placeholder="Jean">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="cf-nom">Nom *</label>
+          <input type="text" class="form-input" id="cf-nom" placeholder="Dupont">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="cf-email">Adresse e-mail *</label>
+        <input type="email" class="form-input" id="cf-email" placeholder="jean.dupont@exemple.fr">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="cf-objet">Objet</label>
+        <input type="text" class="form-input" id="cf-objet" placeholder="Opportunité, question…">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="cf-message">Message *</label>
+        <textarea class="form-input" id="cf-message" placeholder="Votre message…"></textarea>
+      </div>
+
+      <button class="btn-send" onclick="sendMessage()">✦ &nbsp;Envoyer le message</button>
+      <div class="form-status" id="form-status"></div>
+      <p style="margin-top:12px;font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--text3);letter-spacing:1px;">Ce formulaire ouvrira votre client mail avec le message pré-rempli.</p>
+    </div>
+
+    <div class="cv-section">
+      <div style="font-family:'Cinzel',serif;font-size:0.85rem;color:var(--text);letter-spacing:3px;margin-bottom:4px;">Mon Curriculum Vitæ</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.9rem;color:var(--text3);margin-bottom:16px;">Télécharger · Visualiser</div>
+
+      <label class="cv-drop" id="cv-zone">
+        <input type="file" accept=".pdf" style="display:none" id="cv-input" onchange="handleCv(this)">
+        <div class="cv-drop-icon" id="cv-icon">📄</div>
+        <div class="cv-drop-text" id="cv-text">Cliquer ici pour<br>ajouter votre CV (PDF)</div>
+      </label>
+
+      <div id="cv-actions" style="display:none;flex-direction:column;gap:10px;">
+        <button class="btn-primary" id="cv-dl" style="justify-content:center;width:100%;">⬇ &nbsp;Télécharger mon CV</button>
+        <button class="btn-secondary" onclick="resetCv()" style="justify-content:center;width:100%;font-size:0.62rem;">✕ &nbsp;Supprimer</button>
+      </div>
+
+      <div style="margin-top:16px;padding:20px;background:rgba(0,0,0,0.3);border:1px solid var(--border);">
+        <div class="form-label" style="margin-bottom:14px;">Coordonnées directes</div>
+        <div class="contact-info-row">
+          <span class="contact-info-icon">✉</span>
+          <a href="mailto:jade.vincent77@ynov.com" class="contact-info-text">jade.vincent77@ynov.com</a>
+        </div>
+        <div class="contact-info-row">
+          <span class="contact-info-icon">◎</span>
+          <span class="contact-info-text" contenteditable="true" data-placeholder="LinkedIn…">www.linkedin.com/in/jade-vincent-19b784339</span>
+        </div>
+        <div class="contact-info-row">
+          <span class="contact-info-icon">◈</span>
+          <span class="contact-info-text">Île-de-France, France</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- [CORRIGÉ] un seul bloc <script> : chaque fonction n'est plus déclarée qu'une fois
+     (avant : toggleDesc, handlePdf, downloadPdf et les écouteurs d'onglets étaient en double). -->
+<script>
+// ===== NAVIGATION : afficher un onglet =====
+function showTab(name) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  const btn = document.querySelector('.nav-tab[data-tab="' + name + '"]');
+  const target = document.getElementById('tab-' + name);
+  if (btn) btn.classList.add('active');
+  if (target) target.classList.add('active');
+  if (name === 'competences') animateSkills();
+}
+
+document.querySelectorAll('.nav-tab').forEach(tab => {
+  tab.addEventListener('click', () => showTab(tab.dataset.tab));
+});
+
+// ===== FILTRE PROJETS (U5 / U6 / U7) =====
+function selectProjectFilter(unit) {
+  showTab('projets');
+  document.getElementById('project-section-title').textContent =
+    unit === 'all' ? 'Projets & Travaux Pratiques (Tous)' : 'Projets & Travaux Pratiques (' + unit + ')';
+
+  let visible = 0;
+  document.querySelectorAll('#projects-container .project-card').forEach(card => {
+    const show = unit === 'all' || card.dataset.unit === unit;
+    card.style.display = show ? 'block' : 'none';
+    if (show) visible++;
+  });
+  document.getElementById('projects-empty').classList.toggle('show', visible === 0);
+  closeDropdowns();
+}
+
+// ===== [AJOUTÉ] FILTRE VEILLES =====
+const VEILLE_LABELS = {
+  all: 'Toutes',
+  cyber: 'Cybersécurité & Défense des Réseaux',
+  virtu: 'Virtualisation & Systèmes',
+  reseaux: 'Réseaux & Connectivité'
+};
+
+function selectVeilleFilter(cat) {
+  showTab('veilles');
+  document.getElementById('veille-section-title').textContent =
+    'Veilles technologiques (' + VEILLE_LABELS[cat] + ')';
+
+  let visible = 0;
+  document.querySelectorAll('#veilles-container .veille-card').forEach(card => {
+    const show = cat === 'all' || card.dataset.cat === cat;
+    card.style.display = show ? 'block' : 'none';
+    if (show) visible++;
+  });
+  document.getElementById('veilles-empty').classList.toggle('show', visible === 0);
+  closeDropdowns();
+}
+
+// Ferme le menu après un clic (retire le focus qui le garde ouvert)
+function closeDropdowns() {
+  if (document.activeElement) document.activeElement.blur();
+}
+
+// ===== [AJOUTÉ] COMPTEURS AUTOMATIQUES =====
+document.getElementById('tp-count').textContent =
+  document.querySelectorAll('#projects-container .project-card').length;
+document.getElementById('veille-count').textContent =
+  document.querySelectorAll('#veilles-container .veille-card').length;
+
+// ===== DESCRIPTION DÉPLIABLE =====
+function toggleDesc(id, btn) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.toggle('open');
+  btn.innerHTML = el.classList.contains('open')
+    ? '⊖ &nbsp;Masquer'
+    : '⊕ &nbsp;Découvrir le parcours';
+}
+
+// ===== PDF (stockés en mémoire : perdus au rechargement de la page) =====
+const pdfStore = {};
+
+function handlePdf(input, id) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    pdfStore[id] = { name: file.name, data: e.target.result };
+    const nm = document.getElementById('pdf-name-' + id);
+    nm.textContent = '📄 ' + file.name;
+    nm.classList.add('loaded');
+    document.getElementById('dl-' + id).style.display = 'inline-flex';
+  };
+  reader.readAsDataURL(file);
+}
+
+function downloadPdf(id) {
+  if (!pdfStore[id]) return;
+  const a = document.createElement('a');
+  a.href = pdfStore[id].data;
+  a.download = pdfStore[id].name;
+  a.click();
+}
+
+// ===== COMPÉTENCES : animation des barres =====
+function animateSkills() {
+  document.querySelectorAll('.skill-fill').forEach(bar => {
+    const w = bar.dataset.w || bar.style.width;
+    bar.dataset.w = w;
+    bar.style.width = '0%';
+    setTimeout(() => bar.style.width = w, 60);
+  });
+}
+
+// ===== MISSIONS / COMPÉTENCES ALTERNANCE =====
+function addMission() {
+  const li = document.createElement('li');
+  li.className = 'mission-item';
+  li.innerHTML = '<div class="mission-dot"></div><div class="mission-txt" contenteditable="true" data-placeholder="Décris ta mission...">Nouvelle mission</div>';
+  document.getElementById('mission-list').appendChild(li);
+}
+function addCompAlt() {
+  const li = document.createElement('li');
+  li.className = 'mission-item';
+  li.innerHTML = '<div class="mission-dot" style="background:var(--accent3);box-shadow:0 0 6px var(--accent3);"></div><div class="mission-txt" contenteditable="true" data-placeholder="Compétence...">Nouvelle compétence</div>';
+  document.getElementById('comp-alt-list').appendChild(li);
+}
+
+// ===== CV =====
+let cvData = null;
+function handleCv(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    cvData = { name: file.name, data: e.target.result };
+    document.getElementById('cv-icon').textContent = '✅';
+    document.getElementById('cv-text').textContent = file.name;
+    document.getElementById('cv-zone').style.borderColor = 'rgba(0,221,180,0.4)';
+    document.getElementById('cv-actions').style.display = 'flex';
+    document.getElementById('cv-dl').onclick = () => {
+      const a = document.createElement('a');
+      a.href = cvData.data; a.download = cvData.name; a.click();
+    };
+  };
+  reader.readAsDataURL(file);
+}
+function resetCv() {
+  cvData = null;
+  document.getElementById('cv-icon').textContent = '📄';
+  document.getElementById('cv-text').innerHTML = 'Cliquer ici pour<br>ajouter votre CV (PDF)';
+  document.getElementById('cv-zone').style.borderColor = '';
+  document.getElementById('cv-actions').style.display = 'none';
+  document.getElementById('cv-input').value = '';
+}
+
+// ===== FORMULAIRE DE CONTACT =====
+function sendMessage() {
+  const prenom = document.getElementById('cf-prenom').value.trim();
+  const nom = document.getElementById('cf-nom').value.trim();
+  const email = document.getElementById('cf-email').value.trim();
+  const objet = document.getElementById('cf-objet').value.trim();
+  const message = document.getElementById('cf-message').value.trim();
+  const status = document.getElementById('form-status');
+
+  if (!prenom || !nom || !email || !message) {
+    status.className = 'form-status error';
+    status.textContent = '⚠ Veuillez remplir tous les champs obligatoires (*)';
+    return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    status.className = 'form-status error';
+    status.textContent = '⚠ Adresse e-mail invalide';
+    return;
+  }
+  const subject = encodeURIComponent(objet || `Message de ${prenom} ${nom} — Portfolio`);
+  const body = encodeURIComponent(
+    `Bonjour Jade,\n\nVous avez reçu un message depuis votre portfolio.\n\n` +
+    `De : ${prenom} ${nom}\nE-mail : ${email}\n\nMessage :\n${message}\n\n---\nEnvoyé via le portfolio`
+  );
+  window.location.href = `mailto:jade.vincent77@ynov.com?subject=${subject}&body=${body}`;
+  status.className = 'form-status success';
+  status.textContent = '✓ Votre client mail va s\'ouvrir avec le message pré-rempli.';
+}
+
+// ===== PARTICULES (fond animé) =====
+const canvas = document.getElementById('hero-canvas');
+const ctx = canvas.getContext('2d');
+let W, H;
+const particles = [];
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+class Particle {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.vx = (Math.random() - 0.5) * 0.3;
+    this.vy = -Math.random() * 0.5 - 0.1;
+    this.alpha = Math.random() * 0.5 + 0.1;
+    this.size = Math.random() * 1.5 + 0.3;
+    this.color = Math.random() > 0.7 ? '#e8c97e' : '#00ddb4';
+    this.life = 0;
+    this.maxLife = Math.random() * 200 + 100;
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    this.life++;
+    if (this.life > this.maxLife || this.y < -10) this.reset();
+  }
+  draw() {
+    ctx.save();
+    ctx.globalAlpha = this.alpha * Math.sin(Math.PI * this.life / this.maxLife);
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
+for (let i = 0; i < 120; i++) particles.push(new Particle());
+
+function drawConnections() {
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const d = Math.sqrt(dx*dx + dy*dy);
+      if (d < 100) {
+        ctx.save();
+        ctx.globalAlpha = (1 - d/100) * 0.07;
+        ctx.strokeStyle = '#00ddb4';
+        ctx.lineWidth = 0.5;
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.stroke();
+        ctx.restore();
+      }
+    }
+  }
+}
+
+function animParticles() {
+  ctx.clearRect(0, 0, W, H);
+  drawConnections();
+  particles.forEach(p => { p.update(); p.draw(); });
+  requestAnimationFrame(animParticles);
+}
+animParticles();
+</script>
+</body>
+</html>
